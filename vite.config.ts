@@ -16,4 +16,18 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  server: {
+    proxy: {
+      "/api/exchange": {
+        target: "https://api.frankfurter.dev",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) =>
+          path.replace(
+            /^\/api\/exchange/,
+            "/v1/latest?from=USD&to=INR,GBP,CAD,AUD,AED,EUR"
+          ),
+      },
+    },
+  },
 });

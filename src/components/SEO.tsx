@@ -19,6 +19,7 @@ export function SEO({ title, description, keywords }: SEOProps) {
       <meta property="og:type" content="website" />
       {url ? <meta property="og:url" content={url} /> : null}
       {url ? <link rel="canonical" href={url} /> : null}
+      <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     </Helmet>
   );
 }

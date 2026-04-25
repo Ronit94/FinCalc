@@ -17,6 +17,7 @@ export function NumberField({ label, value, onChange, min = 0, max, step = 0.1 }
         min={min}
         max={max}
         step={step}
+        inputMode="decimal"
         onChange={(event) => onChange(Number(event.target.value))}
         className="rounded-xl border border-white/20 bg-slate-950/50 px-3 py-2 text-slate-100 outline-none transition focus:border-cyan-400"
       />

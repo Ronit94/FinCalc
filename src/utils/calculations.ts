@@ -1,3 +1,5 @@
+import { getEMIInsights, getSIPInsights, type CalculatorInsight } from "./insights";
+
 export function calculateMonthlyEmi(principal: number, annualRate: number, tenureYears: number): number {
   const monthlyRate = annualRate / 100 / 12;
   const months = tenureYears * 12;
@@ -12,6 +14,31 @@ export function calculateMonthlyEmi(principal: number, annualRate: number, tenur
 
   const factor = (1 + monthlyRate) ** months;
   return (principal * monthlyRate * factor) / (factor - 1);
+}
+
+export function calculateTotalInterest(principal: number, monthlyPayment: number, tenureYears: number): number {
+  const months = Math.max(tenureYears * 12, 0);
+  return Math.max(monthlyPayment * months - principal, 0);
+}
+
+export interface EmiCalculatorOutput extends CalculatorInsight {
+  result: number;
+  totalInterest: number;
+}
+
+export function calculateEmiOutput(
+  principal: number,
+  annualRate: number,
+  tenureYears: number,
+): EmiCalculatorOutput {
+  const result = calculateMonthlyEmi(principal, annualRate, tenureYears);
+  const totalInterest = calculateTotalInterest(principal, result, tenureYears);
+
+  return {
+    result,
+    totalInterest,
+    ...getEMIInsights({ principal, totalInterest, tenure: tenureYears }),
+  };
 }
 
 export function calculateSimpleInterest(principal: number, annualRate: number, years: number): number {
@@ -35,6 +62,30 @@ export function calculateRecurringInvestmentFutureValue(monthlyContribution: num
     return monthlyContribution * months;
   }
   return monthlyContribution * (((1 + monthlyRate) ** months - 1) / monthlyRate) * (1 + monthlyRate);
+}
+
+export interface SIPCalculatorOutput extends CalculatorInsight {
+  result: number;
+  invested: number;
+  gains: number;
+}
+
+export function calculateRecurringInvestmentOutput(
+  monthlyContribution: number,
+  annualRate: number,
+  years: number,
+  inflation: number,
+): SIPCalculatorOutput {
+  const result = calculateRecurringInvestmentFutureValue(monthlyContribution, annualRate, years);
+  const invested = Math.max(monthlyContribution, 0) * Math.max(years * 12, 0);
+  const gains = Math.max(result - invested, 0);
+
+  return {
+    result,
+    invested,
+    gains,
+    ...getSIPInsights({ invested, returns: annualRate, inflation }),
+  };
 }
 
 export function calculateTermDepositMaturity(principal: number, annualRate: number, years: number, compoundsPerYear: number): number {

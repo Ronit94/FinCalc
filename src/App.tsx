@@ -413,7 +413,7 @@ export default function App() {
   const fxTargets = COUNTRY_CONFIGS.filter((country) => country.currency !== selectedCountry.currency).slice(0, 3);
   const homepageSeo = selectedCountry.code === "IN"
     ? {
-      title: "All-in-One Financial Calculator India | EMI, SIP, Tax & Investment Tools",
+      title: "Global Financial Calculator | EMI, SIP, Tax & Investment Tools",
       description: "Free financial calculator for India. Calculate EMI, SIP returns, tax, and investment growth instantly.",
       keywords: [...SEO_KEYWORDS.core, ...SEO_KEYWORDS.comparison],
     }

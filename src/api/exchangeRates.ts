@@ -12,7 +12,7 @@ export async function fetchExchangeRates(baseCurrency: string, targetCurrencies:
   }
 
   const endpoint = `https://api.frankfurter.app/latest?from=${baseCurrency}&to=${uniqueTargets.join(",")}`;
-  const response = await fetch(endpoint);
+  const response = await fetch(endpoint, {cache: "no-store", mode: "cors"});
 
   if (!response.ok) {
     throw new Error("Unable to fetch live exchange rates");
